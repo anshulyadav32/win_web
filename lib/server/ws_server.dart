@@ -20,8 +20,8 @@ class WebSocketServer {
   WebSocketServer({this.port = 8080});
 
   /// Creates a WebSocket handler for the given request
-  Response handleWebSocketRequest(Request request) {
-    return webSocketHandler((WebSocketChannel channel) {
+  Future<Response> handleWebSocketRequest(Request request) async {
+    return await webSocketHandler((WebSocketChannel channel) {
       _handleNewConnection(channel);
     })(request);
   }

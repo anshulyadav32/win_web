@@ -2,12 +2,10 @@ import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:path/path.dart' as path;
-import 'http_server.dart';
 import 'ws_server.dart';
 
 /// Manages both HTTP and WebSocket servers in a unified way
 class ServerManager {
-  late HttpServer _httpServer;
   late WebSocketServer _wsServer;
   HttpServer? _combinedServer;
   
@@ -18,7 +16,6 @@ class ServerManager {
     this.port = 8080,
     this.webClientPath = 'web_client',
   }) {
-    _httpServer = HttpServer(port: port, webClientPath: webClientPath);
     _wsServer = WebSocketServer(port: port);
   }
 
@@ -57,7 +54,7 @@ class ServerManager {
   bool get isRunning => _combinedServer != null;
 
   /// Gets the server address
-  String get address => _combinedServer?.address.address ?? '0.0.0.0';
+  String get address => _combinedServer?.address ?? '0.0.0.0';
 
   /// Gets the server port
   int get serverPort => _combinedServer?.port ?? port;
@@ -71,7 +68,7 @@ class ServerManager {
 
     // WebSocket endpoint
     if (path == 'ws') {
-      return _wsServer.handleWebSocketRequest(request);
+      return await _wsServer.handleWebSocketRequest(request);
     }
 
     // HTTP requests - serve static files
