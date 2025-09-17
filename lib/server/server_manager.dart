@@ -54,7 +54,7 @@ class ServerManager {
   bool get isRunning => _combinedServer != null;
 
   /// Gets the server address
-  String get address => _combinedServer?.address ?? '0.0.0.0';
+  String get address => _combinedServer?.address.toString() ?? '0.0.0.0';
 
   /// Gets the server port
   int get serverPort => _combinedServer?.port ?? port;
